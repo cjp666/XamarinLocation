@@ -3,15 +3,14 @@ using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
 using Android.Util;
-using Android.Content;
+using Android.App.Job;
+using Android.Widget;
 
 namespace XamarinLocation.Droid
 {
     [Activity(Label = "XamarinLocation", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
-        private Intent myService;
-
         protected override void OnCreate(Bundle bundle)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
@@ -23,11 +22,24 @@ namespace XamarinLocation.Droid
             Xamarin.Essentials.Platform.Init(this, bundle);
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
-            Log.Info("LOCTEST", $"MainActivity.OnCreate");
+            Log.Info("LOCTEST", $"LOCTEST - MainActivity.OnCreate");
 
-            this.myService = new Intent(this, typeof(ForegroundService));
-            this.myService.SetAction("START_SERVICE");
-            this.StartService(this.myService);
+            var jobInfo = this.CreateJobBuilderUsingJobId<LocationService>(1)
+                .SetBackoffCriteria(30000, BackoffPolicy.Linear)
+                .SetPeriodic(JobInfo.MinPeriodMillis)
+                .SetPersisted(true)
+                .SetRequiredNetworkType(NetworkType.Any)
+                .Build();
+            var jobScheduler = (JobScheduler)this.GetSystemService("jobscheduler");
+            var scheduleResult = jobScheduler.Schedule(jobInfo);
+
+            Log.Info("LOCTEST", $"LOCTEST - Schedule {scheduleResult}");
+
+            if (scheduleResult != JobScheduler.ResultSuccess)
+            {
+                Log.Error("LOCTEST", "LOCTEST - failed to schedule!");
+                Toast.MakeText(this, "LOC - didn't work", ToastLength.Long).Show();
+            }
 
             LoadApplication(new App());
         }
@@ -41,9 +53,7 @@ namespace XamarinLocation.Droid
 
         protected override void OnDestroy()
         {
-            Log.Debug("LOCTEST", "OnDestroy");
-
-            this.StopService(this.myService);
+            Log.Debug("LOCTEST", "LOCTEST - OnDestroy");
 
             base.OnDestroy();
         }

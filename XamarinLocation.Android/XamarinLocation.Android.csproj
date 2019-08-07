@@ -78,8 +78,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BootReceiver.cs" />
-    <Compile Include="ForegroundService.cs" />
     <Compile Include="JobSchedulerHelpers.cs" />
     <Compile Include="LocationService.cs" />
     <Compile Include="MainActivity.cs" />
