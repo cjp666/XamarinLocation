@@ -7,9 +7,9 @@ It now appears that the [JobScheduler](https://developer.android.com/reference/a
 
 ## Links: ##
 * [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager)
+* [Android Support / AndroidX for Xamarin.Android](https://github.com/xamarin/AndroidSupportComponents)
 * [Guide to background processing](https://developer.android.com/guide/background)
 * [android.app.job](https://developer.android.com/reference/kotlin/android/app/job/package-summary)
-* [Android Support / AndroidX for Xamarin.Android](https://github.com/xamarin/AndroidSupportComponents) - work manager is still in preview
 * [Testing Doze](https://developer.android.com/training/monitoring-device-state/doze-standby.html#testing_doze)
 
 ## Restrictions ##

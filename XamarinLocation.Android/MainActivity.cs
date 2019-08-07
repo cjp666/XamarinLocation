@@ -5,6 +5,8 @@ using Android.OS;
 using Android.Util;
 using Android.App.Job;
 using Android.Widget;
+using System;
+using AndroidX.Work;
 
 namespace XamarinLocation.Droid
 {
@@ -25,10 +27,10 @@ namespace XamarinLocation.Droid
             Log.Info("LOCTEST", $"LOCTEST - MainActivity.OnCreate");
 
             var jobInfo = this.CreateJobBuilderUsingJobId<LocationService>(1)
-                .SetBackoffCriteria(30000, BackoffPolicy.Linear)
+                .SetBackoffCriteria(30000, Android.App.Job.BackoffPolicy.Linear)
                 .SetPeriodic(JobInfo.MinPeriodMillis)
                 .SetPersisted(true)
-                .SetRequiredNetworkType(NetworkType.Any)
+                .SetRequiredNetworkType(Android.App.Job.NetworkType.Any)
                 .Build();
             var jobScheduler = (JobScheduler)this.GetSystemService("jobscheduler");
             var scheduleResult = jobScheduler.Schedule(jobInfo);
@@ -40,6 +42,11 @@ namespace XamarinLocation.Droid
                 Log.Error("LOCTEST", "LOCTEST - failed to schedule!");
                 Toast.MakeText(this, "LOC - didn't work", ToastLength.Long).Show();
             }
+
+            var locationWorker = PeriodicWorkRequest.Builder
+                .From<LocationWorker>(TimeSpan.FromMinutes(15))
+                .Build();
+            WorkManager.Instance.Enqueue(locationWorker);
 
             LoadApplication(new App());
         }
