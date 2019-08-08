@@ -14,7 +14,7 @@ namespace XamarinLocation.Services
             this.folder = folder;
         }
 
-        public async Task TrackAsync()
+        public async Task TrackAsync(string from)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace XamarinLocation.Services
 
                 Console.WriteLine($"DEBUG - LOCTEST - Track 3");
                 var bl = Battery.ChargeLevel * 100;
-                var m = $"{DateTime.Now.ToString()}, {location.Latitude}, {location.Longitude}, Track, {bl}";
+                var m = $"{DateTime.Now.ToString()}, {location.Latitude}, {location.Longitude}, {from}, {bl}";
                 Console.WriteLine($"DEBUG - LOCTEST - {m}");
 
                 Console.WriteLine($"DEBUG - LOCTEST - Track 4");

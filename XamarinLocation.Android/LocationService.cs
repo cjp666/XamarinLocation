@@ -18,7 +18,7 @@ namespace XamarinLocation.Droid
 
                 var folder = Android.OS.Environment.ExternalStorageDirectory.ToString();
                 var ts = new TrackerService(folder);
-                await ts.TrackAsync();
+                await ts.TrackAsync("LS");
 
                 Log.Debug("LOCTEST", "LOCTEST - OnStartJob - 2");
 

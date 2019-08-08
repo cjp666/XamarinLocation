@@ -2,6 +2,8 @@
 using Android.Util;
 using AndroidX.Work;
 using System;
+using System.Threading.Tasks;
+using XamarinLocation.Services;
 
 namespace XamarinLocation.Droid
 {
@@ -17,6 +19,14 @@ namespace XamarinLocation.Droid
             try
             {
                 Log.Info("LOCTEST", "LOCTEST - DoWork");
+
+                Task.Run(async () =>
+                {
+                    var folder = Android.OS.Environment.ExternalStorageDirectory.ToString();
+                    var ts = new TrackerService(folder);
+                    await ts.TrackAsync("LW");
+                })
+                    .Wait();
 
                 return Result.InvokeSuccess();
             }
